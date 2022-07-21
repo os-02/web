@@ -1,2 +1,2 @@
-# homelab-Infrastructure
+# homelab-infrastructure
 homelab 基建样例
