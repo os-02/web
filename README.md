@@ -11,7 +11,7 @@ homelab 基建样例，基建测试环境。快速提供基本的网络反向代
 这一步会启动以下web服务
 * 公共静态资源: http://public.lab.example.com
 * ariang: http://ariang.lab.example.com
-* traefik: Http://traefik.lab.example.com
+* traefik: http://traefik.lab.example.com
 
 其中静态资源、ariang是由nginx提供服务
 
