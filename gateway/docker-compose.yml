@@ -1,0 +1,52 @@
+version: "2.1"
+services:
+  #nginx 提供静态资源服务
+  nginx:
+    image: lscr.io/linuxserver/nginx:latest
+    container_name: nginx
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/shanghai
+    volumes:
+      - ./nginx/config:/config
+    expose:
+      - 80
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`nginx.${DOMAIN}`)||Host(`ariang.${DOMAIN}`)"
+      - "traefik.http.routers.nginx.entrypoints=web"
+
+  #反向代理功能由 traefik 提供
+  #traefik 能够自动发现和续期ssl，比用 nginx 反向代理写配置文件方便
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+        # - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=web"
+  
+        #old docker-compose
+        #networks:
+        #  default:
+        #    external:
+        #      name: traefik-net
+
+networks:
+  default:
+    name: traefik-net
+    external: true
