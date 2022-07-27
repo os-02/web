@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  whoami:
+    image: "traefik/whoami"
+    restart: unless-stopped
+    container_name: "whoami"
+    expose:
+      - 80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.${LAB_DOMAIN}`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
+networks:
+  default:
+    name: traefik-net
+    external: true

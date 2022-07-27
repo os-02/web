@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  app:
+    image: image
+    restart: unless-stopped
+    expose:
+      - 17170
+    volumes:
+    labels:
+      #某些情况下需要手动指定端口
+      #- 'traefik.http.services.lldap.loadbalancer.server.port=17170'
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.app.rule=Host(`lldap.${LAB_DOMAIN}`)'
+      - 'traefik.http.routers.app.entryPoints=web'
+      #用authelia进行登录验证
+      - 'traefik.http.routers.app.middlewares=authelia@docker'
+
+networks:
+  default:
+    name: traefik-net
+    external: true

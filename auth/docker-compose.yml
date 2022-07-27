@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  authelia:
+    container_name: authelia
+    image: authelia/authelia
+    restart: unless-stopped
+    expose:
+      - 9091
+    volumes:
+      - ./config:/config
+    environment:
+      TZ: "Asia/Shanghai"
+    depends_on:
+      - lldap
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.authelia.rule=Host(`auth.${LAB_DOMAIN}`)'
+      - 'traefik.http.routers.authelia.entryPoints=websecure'
+      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.${LAB_DOMAIN}'
+      - 'traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true'
+      - 'traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
+      - 'traefik.http.middlewares.authelia-basic.forwardAuth.address=http://authelia:9091/api/verify?auth=basic'
+      - 'traefik.http.middlewares.authelia-basic.forwardAuth.trustForwardHeader=true'
+      - 'traefik.http.middlewares.authelia-basic.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
+
+  lldap:
+    image: nitnelave/lldap:stable
+    restart: unless-stopped
+    # Change this to the user:group you want.
+    user: "1000:1000"
+    expose:
+      - 17170
+    ports:
+      # For LDAP
+      - "3890:3890"
+      # For the web front-end
+      #- "17170:17170"
+    volumes:
+      # Alternatively, you can mount a local folder
+      - "./lldap_data:/data"
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.services.lldap.loadbalancer.server.port=17170'
+      - 'traefik.http.routers.lldap.rule=Host(`lldap.${LAB_DOMAIN}`)'
+      - 'traefik.http.routers.lldap.entryPoints=web'
+
+networks:
+  default:
+    name: traefik-net
+    external: true

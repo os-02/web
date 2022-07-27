@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  whoami-auth:
+    image: "traefik/whoami"
+    restart: unless-stopped
+    container_name: "whoami-auth"
+    expose:
+      - 80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami-auth.rule=Host(`whoami-auth.${LAB_DOMAIN}`)"
+      - "traefik.http.routers.whoami-auth.entrypoints=websecure"
+      - 'traefik.http.routers.whoami-auth.middlewares=authelia@docker'
+
+networks:
+  default:
+    name: traefik-net
+    external: true
