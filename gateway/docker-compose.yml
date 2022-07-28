@@ -30,13 +30,16 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      #配置websecure EntryPoints 只允许https流量
+      #泛解析ssl配置
       - "--entrypoints.websecure.http.tls.domains[0].main=${LAB_DOMAIN}"
       - "--entrypoints.websecure.http.tls.domains[0].sans=*.${LAB_DOMAIN}"
+      #证书申请配置，entrypoints.web的端口必须是80
+      - "--certificatesresolvers.rr.acme.email=xx@xx.com"
+      - "--certificatesresolvers.rr.acme.storage=acme.json"
+      - "--certificatesresolvers.rr.acme.httpchallenge.entrypoint=web"
     ports:
       - "80:80"
       - "443:443"
-        # - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
