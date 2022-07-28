@@ -20,11 +20,11 @@ web 基建模板。为 web 服务器提供基本的网络反向代理，静态�
 可以尝试启动 whoami 并访问 http://whoami.lab.example.com 查看效果
 
 ### auth
-依赖于 gateway。用于对本身没有用户管理、身份认证、权限认证的应用提供相关功能。
+依赖于 gateway。提供用户管理、身份认证、权限认证的应用功能。
 此部分由[lldap](https://github.com/nitnelave/lldap)（轻量简单的ldap服务器）和[authelia](https://www.authelia.com/)(认证和鉴权服务器)组成。
 
 web服务地址如下：
 * lldap: http://lldap.lab.example.com
 * authelia: http://auth.lab.example.com
 
-启动 auth 后，可以在app文件夹下启动 whoami-auth ，并访问 https://whoami-auth.example.com 查看效果
+启动 auth 后，可以在 app/whoami-auth 文件夹下启动 whoami-auth ，并访问 https://whoami-auth.lab.example.com 查看效果
