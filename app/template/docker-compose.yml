@@ -7,13 +7,20 @@ services:
       - 17170
     volumes:
     labels:
-      #某些情况下需要手动指定端口
-      #- 'traefik.http.services.lldap.loadbalancer.server.port=17170'
+      #启动traefik
       - 'traefik.enable=true'
+      #配置http访问
       - 'traefik.http.routers.app.rule=Host(`lldap.${LAB_DOMAIN}`)'
       - 'traefik.http.routers.app.entryPoints=web'
+      #某些情况下需要手动指定端口
+      #- 'traefik.http.services.lldap.loadbalancer.server.port=17170'
       #用authelia进行登录验证
-      - 'traefik.http.routers.app.middlewares=authelia@docker'
+      #- 'traefik.http.routers.app.middlewares=authelia@docker'
+      #配置https访问
+      #- 'traefik.http.routers.app.entryPoints=websecure'
+      #- 'traefik.http.routers.app.tls=true'
+      #- 'traefik.http.routers.app.tls.certresolver=rr'
+
 
 networks:
   default:
