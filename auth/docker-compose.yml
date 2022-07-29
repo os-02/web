@@ -14,9 +14,9 @@ services:
       - lldap
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.authelia.rule=Host(`auth.${LAB_DOMAIN}`)'
+      - 'traefik.http.routers.authelia.rule=Host(`auth.${DOMAIN}`)'
       - 'traefik.http.routers.authelia.entryPoints=websecure'
-      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.${LAB_DOMAIN}'
+      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.${DOMAIN}'
       - 'traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true'
       - 'traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
       - 'traefik.http.middlewares.authelia-basic.forwardAuth.address=http://authelia:9091/api/verify?auth=basic'
@@ -41,7 +41,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.services.lldap.loadbalancer.server.port=17170'
-      - 'traefik.http.routers.lldap.rule=Host(`lldap.${LAB_DOMAIN}`)'
+      - 'traefik.http.routers.lldap.rule=Host(`lldap.${DOMAIN}`)'
       - 'traefik.http.routers.lldap.entryPoints=web'
 
 networks:

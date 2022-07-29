@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`public.${LAB_DOMAIN}`)||Host(`ariang.${LAB_DOMAIN}`)"
+      - "traefik.http.routers.nginx.rule=Host(`public.${DOMAIN}`)||Host(`ariang.${DOMAIN}`)"
       - "traefik.http.routers.nginx.entrypoints=web"
 
   #反向代理功能由 traefik 提供
@@ -31,8 +31,8 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       #泛解析ssl配置
-      - "--entrypoints.websecure.http.tls.domains[0].main=${LAB_DOMAIN}"
-      - "--entrypoints.websecure.http.tls.domains[0].sans=*.${LAB_DOMAIN}"
+      - "--entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}"
+      - "--entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
       #证书申请配置，entrypoints.web的端口必须是80
       - "--certificatesresolvers.rr.acme.email=xx@xx.com"
       - "--certificatesresolvers.rr.acme.storage=acme.json"
@@ -44,7 +44,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.${LAB_DOMAIN}`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.entrypoints=web"
   

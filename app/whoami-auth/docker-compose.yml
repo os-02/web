@@ -8,7 +8,7 @@ services:
       - 80
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami-auth.rule=Host(`whoami-auth.${LAB_DOMAIN}`)"
+      - "traefik.http.routers.whoami-auth.rule=Host(`whoami-auth.${DOMAIN}`)"
       - "traefik.http.routers.whoami-auth.entrypoints=websecure"
       - 'traefik.http.routers.whoami-auth.middlewares=authelia@docker'
 
