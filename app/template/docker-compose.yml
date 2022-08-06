@@ -10,7 +10,7 @@ services:
       #启动traefik
       - 'traefik.enable=true'
       #配置http访问
-      - 'traefik.http.routers.app.rule=Host(`lldap.${DOMAIN}`)'
+      - 'traefik.http.routers.app.rule=Host(`template.${DOMAIN}`)'
       - 'traefik.http.routers.app.entryPoints=web'
       #某些情况下需要手动指定端口
       #- 'traefik.http.services.lldap.loadbalancer.server.port=17170'
