@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     container_name: template
     environment:
-    network:
+    networks:
       - traefik-net
       #- internal
     expose:
@@ -29,6 +29,6 @@ services:
 
 networks:
   traefik-net:
-    external: ture
+    external: true
   #建议仅将提供web服务的service接入traefik-net，另外的都使用internal网络
   #internal:
